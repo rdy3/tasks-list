@@ -23,38 +23,53 @@ function Button(props: ButtonProps) {
 
 interface Task {
   name: string
+  complete: boolean
 }
 function App() {
-  const [text, setText] = useState('545')
+  const [text, setText] = useState('')
   const [tasks, setTasks] = useState<Task[]>([
     {
-      name: '123'
+      name: '123',
+      complete: false
     },
     {
-      name: '44'
+      name: '44',
+      complete: true
     }
   ])
-
+  function addTask() {
+    if (text !== '') {
+      setTasks([{ name: text, complete: false }, ...tasks])
+      setText('')
+    }
+  }
+  function deleteTask(taskName: string) {
+    let result = tasks.filter(function (element) {
+      return element.name !== taskName
+    })
+    setTasks(result)
+  }
   return (
     <>
       <input onChange={(event) => setText(event.target.value)} value={text} />
-      <button onClick={() => console.log(text)}>Добавить</button>
+      {/* <button onClick={() => setTasks(tasks.concat({ name: text }))}>Добавить</button> */}
+      <button onClick={addTask}>Добавить</button>
       {/* <div className='task'>
         <input type='checkbox' />
         <span>1. Сделать список задач</span>
         <button>Удалить</button>
       </div> */}
       {/* {text === '' ? 'ПУСТО' : ''} */}
-      {text === '' && (
-        <div>ПУСТО</div>
+      {tasks.length === 0 && (
+        <div>Нет задач</div>
       )}
       {
         tasks.map(function (task) {
           return (
             < div className='task'>
-              <input type='checkbox' />
+              <input type='checkbox' checked={task.complete} />
               <span>{task.name}</span>
-              <button>Удалить</button>
+              <button onClick={() => deleteTask(task.name)}>Удалить</button>
             </div>)
         })
       }
