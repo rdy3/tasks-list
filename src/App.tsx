@@ -1,88 +1,78 @@
-import { Children, ReactNode, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ReactNode, useState } from "react";
 
-interface ButtonProps {
-  disabled: boolean
-  children: ReactNode
-}
-
-function Button(props: ButtonProps) {
-  console.log(props)
-  return (
-    <button disabled={props.disabled}>{props.children}</button>
-  )
-}
-
-// let User = { name: 23, age: 24 }
-// User.name
-// const { name } = User
-// const fruit = ['apple', 'orange']
-// const [apple, orange]=fruit
+import "./App.css";
 
 interface Task {
-  name: string
-  complete: boolean
+  name: string;
+  complete: boolean;
 }
+
 function App() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState("");
   const [tasks, setTasks] = useState<Task[]>([
     {
-      name: '123',
-      complete: false
+      name: "123",
+      complete: false,
     },
     {
-      name: '44',
-      complete: true
-    }
-  ])
+      name: "44",
+      complete: true,
+    },
+  ]);
   function addTask() {
-    if (text !== '') {
-      setTasks([{ name: text, complete: false }, ...tasks])
-      setText('')
+    if (text !== "") {
+      setTasks([{ name: text, complete: false }, ...tasks]);
+      setText("");
     }
   }
   function deleteTask(taskName: string) {
-    let result = tasks.filter(function (element) {
-      return element.name !== taskName
-    })
-    setTasks(result)
+    const result = tasks.filter(function (element) {
+      return element.name !== taskName;
+    });
+    setTasks(result);
   }
+
+  function checkboxTask(taskName: string) {
+    const result = tasks.map(function (task) {
+      if (task.name !== taskName) {
+        return task;
+      } else {
+        return { name: task.name, complete: !task.complete };
+      }
+    });
+    setTasks(result);
+  }
+
   return (
     <>
       <input onChange={(event) => setText(event.target.value)} value={text} />
-      {/* <button onClick={() => setTasks(tasks.concat({ name: text }))}>Добавить</button> */}
+
       <button onClick={addTask}>Добавить</button>
-      {/* <div className='task'>
-        <input type='checkbox' />
-        <span>1. Сделать список задач</span>
-        <button>Удалить</button>
-      </div> */}
-      {/* {text === '' ? 'ПУСТО' : ''} */}
-      {tasks.length === 0 && (
-        <div>Нет задач</div>
-      )}
-      {
-        tasks.map(function (task) {
-          return (
-            < div className='task'>
-              <input type='checkbox' checked={task.complete} />
-              <span>{task.name}</span>
-              <button onClick={() => deleteTask(task.name)}>Удалить</button>
-            </div>)
-        })
-      }
-      {/* < div className='task'>
-        <input type='checkbox' />
-        <span>2. Переделывать список задач</span>
-        <button>Удалить</button>
-      </div> */}
+
+      {tasks.length === 0 && <div>Нет задач</div>}
+
+      {tasks.map(function (task) {
+        return (
+          <div className="task">
+            <input
+              onChange={() => {
+                checkboxTask(task.name);
+              }}
+              type="checkbox"
+              checked={task.complete}
+            />
+
+            <span>{task.name}</span>
+
+            <button onClick={() => deleteTask(task.name)}>Удалить</button>
+          </div>
+        );
+      })}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
 
 // function Task() {
 //   return (
@@ -95,7 +85,8 @@ export default App
 // }
 // export Task
 
-{/* <div>
+{
+  /* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -115,9 +106,8 @@ export default App
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p> */}
-
-
+      </p> */
+}
 
 // const [count, setCount] = useState(0)
 // console.log('render')
@@ -128,3 +118,38 @@ export default App
 //     <button onClick={() => setCount(count + 1)}>кнопка +</button>
 //   </div>
 // )
+
+{
+  /* <div className='task'>
+        <input type='checkbox' />
+        <span>1. Сделать список задач</span>
+        <button>Удалить</button>
+      </div> */
+}
+{
+  /* {text === '' ? 'ПУСТО' : ''} */
+}
+
+{
+  /* < div className='task'>
+        <input type='checkbox' />
+        <span>2. Переделывать список задач</span>
+        <button>Удалить</button>
+      </div> */
+}
+
+// interface ButtonProps {
+//   disabled: boolean;
+//   children: ReactNode;
+// }
+
+// function Button(props: ButtonProps) {
+//   console.log(props);
+//   return <button disabled={props.disabled}>{props.children}</button>;
+// }
+
+// let User = { name: 23, age: 24 }
+// User.name
+// const { name } = User
+// const fruit = ['apple', 'orange']
+// const [apple, orange]=fruit
