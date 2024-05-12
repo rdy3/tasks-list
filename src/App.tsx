@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 
 import "./App.css";
 
@@ -8,6 +8,7 @@ interface Task {
 }
 
 function App() {
+  const focusinputref = useRef(null);
   const [text, setText] = useState("");
   const [tasks, setTasks] = useState<Task[]>([
     {
@@ -23,7 +24,12 @@ function App() {
     if (text !== "") {
       setTasks([{ name: text, complete: false }, ...tasks]);
       setText("");
+    } else {
+      focusinput();
     }
+  }
+  function focusinput() {
+    focusinputref.current.focus();
   }
   function deleteTask(taskName: string) {
     const result = tasks.filter(function (element) {
@@ -45,7 +51,11 @@ function App() {
 
   return (
     <>
-      <input onChange={(event) => setText(event.target.value)} value={text} />
+      <input
+        onChange={(event) => setText(event.target.value)}
+        value={text}
+        ref={focusinputref}
+      />
 
       <button onClick={addTask}>Добавить</button>
 
