@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 import "./App.css";
 
@@ -8,29 +8,36 @@ interface Task {
 }
 
 function App() {
-  const focusinputref = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      name: "123",
-      complete: false,
+  const [tasks, setTasks] = useState<Task[]>(function () {
+    const getTasks = localStorage.getItem("tasks");
+    if (getTasks !== null) {
+      return JSON.parse(getTasks) as Task[];
+    } else {
+      return [];
+    }
+  });
+
+  useEffect(
+    function () {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     },
-    {
-      name: "44",
-      complete: true,
-    },
-  ]);
+    [tasks]
+  );
+
   function addTask() {
     if (text !== "") {
       setTasks([{ name: text, complete: false }, ...tasks]);
       setText("");
     } else {
-      focusinput();
+      // if (inputRef.current !== null) {
+      //   inputRef.current.focus();
+      // }
+      inputRef.current?.focus();
     }
   }
-  function focusinput() {
-    focusinputref.current.focus();
-  }
+
   function deleteTask(taskName: string) {
     const result = tasks.filter(function (element) {
       return element.name !== taskName;
@@ -54,7 +61,7 @@ function App() {
       <input
         onChange={(event) => setText(event.target.value)}
         value={text}
-        ref={focusinputref}
+        ref={inputRef}
       />
 
       <button onClick={addTask}>Добавить</button>
