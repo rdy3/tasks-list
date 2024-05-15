@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import "./App.css";
 
@@ -57,35 +57,45 @@ function App() {
   }
 
   return (
-    <>
+    <div className="justify-start m-4 space-y-4">
       <input
+        className="border-inherit rounded border-2 p-1"
         onChange={(event) => setText(event.target.value)}
         value={text}
         ref={inputRef}
       />
 
-      <button onClick={addTask}>Добавить</button>
+      <button
+        className="border-inherit rounded border-2 m-2 p-1"
+        onClick={addTask}
+      >
+        Добавить
+      </button>
 
       {tasks.length === 0 && <div>Нет задач</div>}
 
       {tasks.map(function (task) {
         return (
-          <div className="task">
-            <input
-              onChange={() => {
-                checkboxTask(task.name);
-              }}
-              type="checkbox"
-              checked={task.complete}
-            />
+          <div className="p-4 flex justify-between border-inherit rounded border-2">
+            <div className="">
+              <input
+                onChange={() => {
+                  checkboxTask(task.name);
+                }}
+                type="checkbox"
+                checked={task.complete}
+              />
 
-            <span>{task.name}</span>
+              <span className="m-2">{task.name}</span>
+            </div>
 
-            <button onClick={() => deleteTask(task.name)}>Удалить</button>
+            <button className="" onClick={() => deleteTask(task.name)}>
+              Удалить
+            </button>
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
 
