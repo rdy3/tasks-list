@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 
 interface Task {
   name: string;
   complete: boolean;
-  id: number;
+  id: string;
 }
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
 
   function addTask() {
     if (text !== "") {
-      setTasks([{ name: text, complete: false, id: Math.random() }, ...tasks]);
+      setTasks([{ name: text, complete: false, id: uuidv4() }, ...tasks]);
       setText("");
     } else {
       // if (inputRef.current !== null) {
@@ -39,14 +39,14 @@ function App() {
     }
   }
 
-  function deleteTask(taskId: number) {
+  function deleteTask(taskId: string) {
     const result = tasks.filter(function (element) {
       return element.id !== taskId;
     });
     setTasks(result);
   }
 
-  function checkboxTask(taskId: number) {
+  function checkboxTask(taskId: string) {
     const result = tasks.map(function (task) {
       if (task.id !== taskId) {
         return task;
