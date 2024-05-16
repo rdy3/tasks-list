@@ -5,6 +5,7 @@ import "./App.css";
 interface Task {
   name: string;
   complete: boolean;
+  id: number;
 }
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
 
   function addTask() {
     if (text !== "") {
-      setTasks([{ name: text, complete: false }, ...tasks]);
+      setTasks([{ name: text, complete: false, id: Math.random() }, ...tasks]);
       setText("");
     } else {
       // if (inputRef.current !== null) {
@@ -38,19 +39,19 @@ function App() {
     }
   }
 
-  function deleteTask(taskName: string) {
+  function deleteTask(taskId: number) {
     const result = tasks.filter(function (element) {
-      return element.name !== taskName;
+      return element.id !== taskId;
     });
     setTasks(result);
   }
 
-  function checkboxTask(taskName: string) {
+  function checkboxTask(taskId: number) {
     const result = tasks.map(function (task) {
-      if (task.name !== taskName) {
+      if (task.id !== taskId) {
         return task;
       } else {
-        return { name: task.name, complete: !task.complete };
+        return { name: task.name, complete: !task.complete, id: task.id };
       }
     });
     setTasks(result);
@@ -95,7 +96,7 @@ function App() {
             <div className="">
               <input
                 onChange={() => {
-                  checkboxTask(task.name);
+                  checkboxTask(task.id);
                 }}
                 type="checkbox"
                 checked={task.complete}
@@ -104,7 +105,7 @@ function App() {
               <span className="m-2">{task.name}</span>
             </div>
 
-            <button className="" onClick={() => deleteTask(task.name)}>
+            <button className="" onClick={() => deleteTask(task.id)}>
               Удалить
             </button>
           </div>
