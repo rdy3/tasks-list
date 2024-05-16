@@ -56,6 +56,21 @@ function App() {
     setTasks(result);
   }
 
+  function countTasksComplete() {
+    const counter = tasks.filter(function (task) {
+      if (task.complete !== false) return task;
+    });
+    return counter.length;
+  }
+
+  function countTasksUncompleted() {
+    const counter = tasks.filter(function (task) {
+      if (task.complete !== true) return task;
+    });
+    console.log(counter);
+    return counter.length;
+  }
+
   return (
     <div className="justify-start m-4 space-y-4">
       <input
@@ -95,6 +110,9 @@ function App() {
           </div>
         );
       })}
+      <div>Всего задач: {tasks.length}</div>
+      <div>Выполненных задач: {countTasksComplete()}</div>
+      <div>Не выполненных задач: {countTasksUncompleted()}</div>
     </div>
   );
 }
