@@ -19,6 +19,9 @@ function App() {
       return [];
     }
   });
+  const [currentFilter, setCurrentFilter] = useState<
+    "all" | "completed" | "uncompleted"
+  >("all");
 
   useEffect(
     function () {
@@ -72,6 +75,12 @@ function App() {
     return counter.length;
   }
 
+  const filteredTasks = tasks.filter(function (task) {
+    if (currentFilter === "all") return true;
+    if (currentFilter === "completed") return task.complete;
+    if (currentFilter === "uncompleted") return !task.complete;
+  });
+
   return (
     <div className="justify-start m-4 space-y-4">
       <input
@@ -80,17 +89,14 @@ function App() {
         value={text}
         ref={inputRef}
       />
-
       <button
         className="border-inherit rounded border-2 m-2 p-1"
         onClick={addTask}
       >
         Добавить
       </button>
-
       {tasks.length === 0 && <div>Нет задач</div>}
-
-      {tasks.map(function (task) {
+      {filteredTasks.map(function (task) {
         return (
           <div className="p-4 flex justify-between border-inherit rounded border-2">
             <div className="">
@@ -111,6 +117,35 @@ function App() {
           </div>
         );
       })}
+      {/* <button onClick={() => AllTask()}>Нажать</button>
+
+      <div>Всего задач: {tasks.length}</div>
+
+      <button onClick={() => ComletedTasks()}>Нажать</button>
+
+      <div>Выполненных задач: {countTasksComplete()}</div>
+
+      <button onClick={() => UncomletedTasks()}>Нажать</button>
+
+      <div>Не выполненных задач: {countTasksUncompleted()}</div> */}
+      <button
+        disabled={currentFilter === "all"}
+        onClick={() => setCurrentFilter("all")}
+      >
+        Все задачи
+      </button>
+      <button
+        disabled={currentFilter === "completed"}
+        onClick={() => setCurrentFilter("completed")}
+      >
+        Выполненные задачи
+      </button>
+      <button
+        disabled={currentFilter === "uncompleted"}
+        onClick={() => setCurrentFilter("uncompleted")}
+      >
+        Не выполенные задачи
+      </button>
       <div>Всего задач: {tasks.length}</div>
       <div>Выполненных задач: {countTasksComplete()}</div>
       <div>Не выполненных задач: {countTasksUncompleted()}</div>
