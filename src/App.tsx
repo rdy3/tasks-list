@@ -99,7 +99,7 @@ function App() {
       {filteredTasks.map(function (task) {
         return (
           <div className="p-4 flex justify-between border-inherit rounded border-2">
-            <div className="">
+            <div>
               <input
                 onChange={() => {
                   checkboxTask(task.id);
@@ -108,7 +108,9 @@ function App() {
                 checked={task.complete}
               />
 
-              <span className="m-2">{task.name}</span>
+              <span className={task.complete ? "line-through m-2" : "m-2"}>
+                {task.name}
+              </span>
             </div>
 
             <button className="" onClick={() => deleteTask(task.id)}>
@@ -117,32 +119,24 @@ function App() {
           </div>
         );
       })}
-      {/* <button onClick={() => AllTask()}>Нажать</button>
-
-      <div>Всего задач: {tasks.length}</div>
-
-      <button onClick={() => ComletedTasks()}>Нажать</button>
-
-      <div>Выполненных задач: {countTasksComplete()}</div>
-
-      <button onClick={() => UncomletedTasks()}>Нажать</button>
-
-      <div>Не выполненных задач: {countTasksUncompleted()}</div> */}
       <button
         disabled={currentFilter === "all"}
         onClick={() => setCurrentFilter("all")}
+        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
       >
         Все задачи
       </button>
       <button
         disabled={currentFilter === "completed"}
         onClick={() => setCurrentFilter("completed")}
+        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
       >
         Выполненные задачи
       </button>
       <button
         disabled={currentFilter === "uncompleted"}
         onClick={() => setCurrentFilter("uncompleted")}
+        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
       >
         Не выполенные задачи
       </button>
