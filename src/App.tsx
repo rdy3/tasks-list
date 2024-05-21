@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
+import { CounterTask } from "./counter-tasks";
 
-interface Task {
+export interface Task {
   name: string;
   complete: boolean;
   id: string;
@@ -58,21 +59,6 @@ function App() {
       }
     });
     setTasks(result);
-  }
-
-  function countTasksComplete() {
-    const counter = tasks.filter(function (task) {
-      if (task.complete !== false) return task;
-    });
-    return counter.length;
-  }
-
-  function countTasksUncompleted() {
-    const counter = tasks.filter(function (task) {
-      if (task.complete !== true) return task;
-    });
-    console.log(counter);
-    return counter.length;
   }
 
   const filteredTasks = tasks.filter(function (task) {
@@ -146,9 +132,7 @@ function App() {
       >
         Не выполенные задачи
       </button>
-      <div>Всего задач: {tasks.length}</div>
-      <div>Выполненных задач: {countTasksComplete()}</div>
-      <div>Не выполненных задач: {countTasksUncompleted()}</div>
+      <CounterTask tasks={tasks} />
     </div>
   );
 }
