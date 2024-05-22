@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import { CounterTask } from "./counter-tasks";
+import { ButtonTask } from "./button-task";
 
 export interface Task {
   name: string;
@@ -105,27 +106,7 @@ function App() {
           </div>
         );
       })}
-      <button
-        disabled={currentFilter === "all"}
-        onClick={() => setCurrentFilter("all")}
-        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
-      >
-        Все задачи
-      </button>
-      <button
-        disabled={currentFilter === "completed"}
-        onClick={() => setCurrentFilter("completed")}
-        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
-      >
-        Выполненные задачи
-      </button>
-      <button
-        disabled={currentFilter === "uncompleted"}
-        onClick={() => setCurrentFilter("uncompleted")}
-        className="border-inherit rounded border-2 m-2 p-1 disabled:text-slate-300"
-      >
-        Не выполенные задачи
-      </button>
+      <ButtonTask filter={currentFilter} setFilter={setCurrentFilter} />
       <CounterTask tasks={tasks} />
     </div>
   );
