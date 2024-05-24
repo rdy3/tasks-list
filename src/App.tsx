@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import "./App.css";
 import { CounterTask } from "./counter-tasks";
 import { ButtonTask } from "./button-task";
+import { TasksList } from "./task-list";
 
 export interface Task {
   name: string;
@@ -44,13 +45,6 @@ function App() {
     }
   }
 
-  function deleteTask(taskId: string) {
-    const result = tasks.filter(function (element) {
-      return element.id !== taskId;
-    });
-    setTasks(result);
-  }
-
   function checkboxTask(taskId: string) {
     const result = tasks.map(function (task) {
       if (task.id !== taskId) {
@@ -58,6 +52,13 @@ function App() {
       } else {
         return { name: task.name, complete: !task.complete, id: task.id };
       }
+    });
+    setTasks(result);
+  }
+
+  function deleteTask(taskId: string) {
+    const result = tasks.filter(function (element) {
+      return element.id !== taskId;
     });
     setTasks(result);
   }
@@ -82,30 +83,19 @@ function App() {
       >
         Добавить
       </button>
+
       {tasks.length === 0 && <div>Нет задач</div>}
       {filteredTasks.map(function (task) {
         return (
-          <div className="p-4 flex justify-between border-inherit rounded border-2">
-            <div>
-              <input
-                onChange={() => {
-                  checkboxTask(task.id);
-                }}
-                type="checkbox"
-                checked={task.complete}
-              />
-
-              <span className={task.complete ? "line-through m-2" : "m-2"}>
-                {task.name}
-              </span>
-            </div>
-
-            <button className="" onClick={() => deleteTask(task.id)}>
-              Удалить
-            </button>
-          </div>
+          <TasksList
+            tasks={tasks}
+            deleteTask={deleteTask}
+            checkboxTask={checkboxTask}
+            task={task}
+          />
         );
       })}
+
       <ButtonTask filter={currentFilter} setFilter={setCurrentFilter} />
       <CounterTask tasks={tasks} />
     </div>

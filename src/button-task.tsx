@@ -1,6 +1,6 @@
 interface ButtonTaskProps {
   filter: "all" | "completed" | "uncompleted";
-  setFilter: Function;
+  setFilter: (newFilter: "all" | "completed" | "uncompleted") => void;
 }
 
 export function ButtonTask(props: ButtonTaskProps) {
