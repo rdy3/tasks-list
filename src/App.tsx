@@ -1,17 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./App.css";
-import { CounterTask } from "./counter-tasks";
-import { ButtonTask } from "./button-task";
-import { TasksList } from "./task-list";
+import { CounterTask } from "./features/counter-tasks";
+import { ButtonTask } from "./features/button-task";
+import { TasksItem } from "./entities/task/task-item";
+import { filterTasks } from "./shared/lib/filter-tasks";
+import { Task, Filter } from "./entities/task/types";
 
-export interface Task {
-  name: string;
-  complete: boolean;
-  id: string;
-}
-
-function App() {
+export function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState("");
   const [tasks, setTasks] = useState<Task[]>(function () {
@@ -22,18 +18,13 @@ function App() {
       return [];
     }
   });
-  const [currentFilter, setCurrentFilter] = useState<
-    "all" | "completed" | "uncompleted"
-  >("all");
+  const [currentFilter, setCurrentFilter] = useState<Filter>("all");
 
-  useEffect(
-    function () {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    },
-    [tasks]
-  );
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
 
-  function addTask() {
+  const addTask = () => {
     if (text !== "") {
       setTasks([{ name: text, complete: false, id: uuidv4() }, ...tasks]);
       setText("");
@@ -43,10 +34,10 @@ function App() {
       // }
       inputRef.current?.focus();
     }
-  }
+  };
 
   function checkboxTask(taskId: string) {
-    const result = tasks.map(function (task) {
+    const result = tasks.map((task) => {
       if (task.id !== taskId) {
         return task;
       } else {
@@ -57,17 +48,11 @@ function App() {
   }
 
   function deleteTask(taskId: string) {
-    const result = tasks.filter(function (element) {
-      return element.id !== taskId;
+    const result = tasks.filter((task) => {
+      return task.id !== taskId;
     });
     setTasks(result);
   }
-
-  const filteredTasks = tasks.filter(function (task) {
-    if (currentFilter === "all") return true;
-    if (currentFilter === "completed") return task.complete;
-    if (currentFilter === "uncompleted") return !task.complete;
-  });
 
   return (
     <div className="justify-start m-4 space-y-4">
@@ -85,10 +70,9 @@ function App() {
       </button>
 
       {tasks.length === 0 && <div>Нет задач</div>}
-      {filteredTasks.map(function (task) {
+      {filterTasks(tasks, currentFilter).map((task) => {
         return (
-          <TasksList
-            tasks={tasks}
+          <TasksItem
             deleteTask={deleteTask}
             checkboxTask={checkboxTask}
             task={task}
@@ -101,8 +85,6 @@ function App() {
     </div>
   );
 }
-
-export default App;
 
 // function Task() {
 //   return (

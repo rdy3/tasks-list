@@ -1,4 +1,4 @@
-import { Task } from "./App";
+import { Task } from "../entities/task/types";
 
 interface CounterTaskProps {
   tasks: Task[];
@@ -12,8 +12,9 @@ function countTasksComplete(taskList: Task[]) {
 }
 
 export function CounterTask(props: CounterTaskProps) {
+  const { tasks } = props;
   function countTasksUncompleted() {
-    const counter = props.tasks.filter(function (task) {
+    const counter = tasks.filter(function (task) {
       if (task.complete !== true) return task;
     });
     console.log(counter);
@@ -22,8 +23,8 @@ export function CounterTask(props: CounterTaskProps) {
 
   return (
     <div>
-      <div>Всего задач: {props.tasks.length}</div>
-      <div>Выполненных задач: {countTasksComplete(props.tasks)}</div>
+      <div>Всего задач: {tasks.length}</div>
+      <div>Выполненных задач: {countTasksComplete(tasks)}</div>
       <div>Не выполненных задач: {countTasksUncompleted()}</div>
     </div>
   );
